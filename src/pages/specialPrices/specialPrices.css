@@ -1,0 +1,25 @@
+
+.special-prices-container {
+    padding: 10px ;
+    height: 100%;
+
+}
+.special-prices-title {
+    margin-bottom: 30px;
+}
+@media screen and (min-width: 1000px){
+    .special-prices-container {
+        display: flex;
+    }
+    .special-prices-title {
+        max-width: 40%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .special-prices-container {
+        padding-top: 50px;;
+    }
+}
