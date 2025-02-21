@@ -55,7 +55,7 @@ const LogoutIcon = () => (
 
   return (
     <div style={{
-      backgroundColor: location.pathname === "/" ? "#2c3469" : "#fff",
+      backgroundColor: location.pathname === "/" ? "#2c3469" : "#747db5",
       color: location.pathname === "/" ? "#fff" : "#2c3469",
       minHeight: '100vh',
       paddingBottom: '50px',

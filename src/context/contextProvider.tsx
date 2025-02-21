@@ -27,7 +27,7 @@ export const AppContext = createContext<Context>({
 export const AppProvider = ({children}:Props) => {
     const [products, setProducts] = useState<IProduct[]>([]);
     const [specialPrices, setSpecialPrices] = useState<ISpecialPrice[]>([])
-    const [registeredUser, setRegisteredUser] = useState<ISpecialPrice[] | null>(null);
+    const [registeredUser, setRegisteredUser] = useState<ISpecialPrice | null>(null);
     const [isLogin, setIsLogin] = useState<boolean>(false);
     const [registeredDocument, setRegisteredDocument] = useState<string | null>(null);
   
