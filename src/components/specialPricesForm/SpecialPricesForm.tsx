@@ -4,6 +4,7 @@ import { IProduct } from "../../interfaces/product.interface";
 import { ISpecialPriceForm } from "../../interfaces/specialPriceForm.interface";
 import { createSpecialPrice, getAllProducts } from "../../services/apiService";
 import { AppContext } from "../../context/contextProvider";
+import Swal from 'sweetalert2';
 
 
 const initialForm =  {
@@ -63,10 +64,18 @@ export default function SpecialPriceForm() {
 
       }
       if(createSpecialPriceUser.resStatus === 400 ) {
-        return alert(createSpecialPriceUser.messages[0])
+        return Swal.fire({
+          icon: "warning",
+          title: "No se agregó",
+          text: createSpecialPriceUser.messages[0],
+        });
       }
       setFormData(initialForm);
-      alert("Registraste el producto con éxito. Búscalo en tienda")
+      return Swal.fire({
+              icon: "success",
+              title: "Registro Exitoso",
+              text: "Registraste el producto con éxito. Búscalo en tienda",
+            });
   };
 
   return (

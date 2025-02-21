@@ -4,6 +4,8 @@ import './layout.css';
 import { getAllProducts, userRegisteredSpecialPrices } from "../services/apiService";
 import { AppContext } from "../context/contextProvider";
 import { IProduct } from "../interfaces/product.interface";
+import Swal from 'sweetalert2'
+
 
 interface Props {
     children: React.ReactNode;
@@ -45,11 +47,19 @@ export const LayoutComponent: React.FC<Props> = ({children}) => {
 
   const showDocumentInput = async ()=>{
     if(inputValue.trim() === '' || inputValue.length < 5){
-      return alert('Por favor ingresa un número de documento válido')
+      return Swal.fire({
+        icon: "error",
+        title: "Formato inválido",
+        text: "Por favor ingresa un documento de almenos 5 caracteres",
+      });
     }
     const user = await userRegisteredSpecialPrices(inputValue.trim());
     if(user.data.length === 0){
-      return alert('El documento no está registrado. Por favor hágalo en el módulo "subida"')
+      return Swal.fire({
+        icon: "error",
+        title: "Documento Erroneo",
+        text: 'El documento no está registrado. Por favor hágalo en el módulo "subida"',
+      });
     }
     setIsLogin(true)
     setShowinput(prev => !prev);
