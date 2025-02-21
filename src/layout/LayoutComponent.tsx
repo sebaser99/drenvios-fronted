@@ -9,7 +9,7 @@ interface Props {
     children: React.ReactNode;
 }
 export const LayoutComponent: React.FC<Props> = ({children}) => {
-      const {products, setProducts, specialPrices, setSpecialPrices, registeredDocument,  registeredUser, setRegisteredUser, setIsLogin, setRegisteredDocument, isLogin} = useContext(AppContext);
+      const {setProducts, specialPrices, registeredDocument,  registeredUser, setRegisteredUser, setIsLogin, setRegisteredDocument, isLogin} = useContext(AppContext);
   
   const [showInput, setShowinput] = useState(false);
    const [inputValue, setInputValue] = useState<string>('');
@@ -38,7 +38,7 @@ export const LayoutComponent: React.FC<Props> = ({children}) => {
 
     const latestSpecialPrices = [...specialPrices]
     const p = await getAllProducts();
-    
+
     const conSpecialPrice = p.data.map((product: IProduct)=> {
         latestSpecialPrices.forEach(sp => {
             if(product._id === sp.productId){
