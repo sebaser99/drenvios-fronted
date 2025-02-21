@@ -4,7 +4,7 @@ import './layout.css';
 import { getAllProducts, userRegisteredSpecialPrices } from "../services/apiService";
 import { AppContext } from "../context/contextProvider";
 import { IProduct } from "../interfaces/product.interface";
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
 
 
 interface Props {

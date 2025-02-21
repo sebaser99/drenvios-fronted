@@ -88,7 +88,7 @@ export default function SpecialPriceForm() {
         </div>
         <div className="form-group">
           <label>Documento</label>
-          <input placeholder="Ingres el documento" type="text" name="document" value={formData.document} onChange={handleChange} required />
+          <input placeholder="Ingres el documento" type="number" name="document" value={formData.document} onChange={handleChange} required />
         </div>
         <div className="form-group">
           <label>Producto</label>
