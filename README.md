@@ -1,50 +1,57 @@
-# React + TypeScript + Vite
+# DrEnvios Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 📌 Introducción
+DrEnvios Frontend es la interfaz de usuario para la prueba técnica de la misma empresa, desarrollada con **React y Vite**. Este proyecto usa una colección de productos alojada en mongo db y el objetivo es que el usuario escoja productos de los que desea recibir un precio especial. El proyecto admite el inicio de sesión para traer los precios especiales almacenos previamente y agregar nuevos productos para recibir los precios especiales.
 
-Currently, two official plugins are available:
+## 🚀 Pasos para ejecutar localmente
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### 📋 Requisitos previos
+Asegúrate de tener instalado:
+- [Node.js](https://nodejs.org/) (versión recomendada: 18 o superior)
+- [Git](https://git-scm.com/)
 
-## Expanding the ESLint configuration
+### 🔧 Instalación y ejecución
+1. Clonar el repositorio:
+   ```bash
+   git clone https://github.com/sebaser99/drenvios-fronted.git
+   ```
+2. Acceder al directorio del proyecto:
+   ```bash
+   cd drenvios-fronted
+   ```
+3. Instalar las dependencias:
+   ```bash
+   npm install
+   ```
+4. Iniciar el servidor de desarrollo:
+   ```bash
+   npm run dev
+   ```
+5. Abrir el navegador en [http://localhost:5173](http://localhost:5173) (por defecto con Vite)
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## 🎯 Justificación de elecciones técnicas
 
-- Configure the top-level `parserOptions` property like this:
+- **React con Vite**: Se eligió Vite sobre CRA por su velocidad en el tiempo de construcción y desarrollo.
+- **TypeScript**: Mejora la seguridad del código con tipado estático y permite detección de errores en tiempo de ejecución.
+- **ContextAPI**: Para la gestión del estado global de la aplicación sin necesidad de instalar dependencias adicionales.
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## 📂 Descripción de la estructura del proyecto
+
+```plaintext
+📦 drenvios-fronted
+├── 📁 src              # Código fuente principal
+│   ├── 📁 components   # Componentes reutilizables
+│   ├── 📁 pages        # Páginas principales de la aplicación
+│   ├── 📁 hooks        # Hooks personalizados
+│   ├── 📁 context      # Context API para gestión de estado (si aplica)
+│   ├── 📁 styles       # Archivos de estilos (CSS o Tailwind)
+│   ├── 📁 api          # Módulos para llamadas a la API
+│   ├── main.tsx        # Punto de entrada de la aplicación
+│   └── App.tsx         # Componente raíz de la aplicación
+├── 📁 public           # Archivos estáticos
+├── 📄 index.html       # Archivo principal HTML
+├── 📄 package.json     # Dependencias y scripts
+└── 📄 vite.config.ts   # Configuración de Vite
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
