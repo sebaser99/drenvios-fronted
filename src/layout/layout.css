@@ -9,3 +9,71 @@
         justify-content: center;
     }
 }
+
+.discounts {
+    background-color: #ef6152;
+    color: white;
+    height: 40px;
+    padding: 10px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.discounts  span {
+    font-weight: bold;
+    font-size: 14px;
+    display: block;
+    width: 100%;
+    animation: translate 12s linear infinite; 
+    position: absolute;
+}
+
+@keyframes translate {
+    0% {
+        transform: translateX(100%);
+    } 
+    100% {
+        transform: translateX(-50%)
+    }
+}
+
+.discount-input-container {
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+@media screen and (min-width: 550px) {
+    .discount-input-container {
+        max-width: 50%;
+        margin: 0 auto;
+    }
+}
+
+.discount-input-container input {
+    width: 100%;
+}
+
+.discount-input-container input{
+    padding: 5px 10px;
+}
+.discount-input-container button {
+    padding: 5px 10px;
+    border: 1px solid #2c3469;
+}
+
+.discount-input-container button:hover {
+    background-color: #2c3469;
+}
+
+.discount-container {
+    background-color: #ef6152;
+
+}

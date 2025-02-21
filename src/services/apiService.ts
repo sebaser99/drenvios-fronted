@@ -25,6 +25,18 @@ export const getAllSpecialPrices = async ()=> {
     }
 }
 
+export const userRegisteredSpecialPrices = async (id: string)=> {
+    try {
+        const url = `${api}/specialPrices/user/${id}`
+
+        const res = await fetch(url)
+        const data = await res.json()
+        return data;
+    } catch(e){
+        console.debug(e)
+    }
+}
+
 export const createSpecialPrice = async (formData:any)=> {
     try {
         const url = `${api}/specialPrices
@@ -36,8 +48,9 @@ export const createSpecialPrice = async (formData:any)=> {
             },
             body: JSON.stringify(formData),
         });
-        const data = await res.json()
-        return data;
+        let data = await res.json();
+        data.resStatus = res.status;
+        return data
     } catch(e){
         console.debug(e)
     }

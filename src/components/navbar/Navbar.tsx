@@ -49,7 +49,6 @@ export const Navbar = () => {
       <nav className="navbar">
         <div className="container container-navbar">
           <Link to="/" style={{textDecoration: 'none'}}><p className="logo">Dr Envíos</p></Link>
-          
         {
           isVisible && (
               <ul className="nav-links">

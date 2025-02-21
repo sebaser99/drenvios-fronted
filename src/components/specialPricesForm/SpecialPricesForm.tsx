@@ -1,33 +1,72 @@
-import { useState, ChangeEvent, FormEvent } from "react";
+import { useState, ChangeEvent, FormEvent, useEffect, useContext } from "react";
 import "./specialPricesForm.css"; 
 import { IProduct } from "../../interfaces/product.interface";
 import { ISpecialPriceForm } from "../../interfaces/specialPriceForm.interface";
+import { createSpecialPrice, getAllProducts } from "../../services/apiService";
+import { AppContext } from "../../context/contextProvider";
 
 
-
-// Lista de productos
-const products: IProduct[] = [
-  { _id: "p1", name: "Producto 1" },
-  { _id: "p2", name: "Producto 2" },
-  { _id: "p3", name: "Producto 3" },
-];
-
-export default function SpecialPriceForm() {
-  const [formData, setFormData] = useState<ISpecialPriceForm>({
+const initialForm =  {
     document: "",
     name: '',
     productId: "",
-  });
+}
 
-  // Manejo de cambios en los inputs
+export default function SpecialPriceForm() {
+  const {products, setProducts, specialPrices, setIsLogin, setRegisteredUser, setRegisteredDocument } = useContext(AppContext);
+  const [formData, setFormData] = useState<ISpecialPriceForm>(initialForm);
+
+   useEffect(() => {
+          const fetchProducts = async() => {
+              if(sessionStorage.getItem('products')){
+                  const storageProducts = JSON.parse( sessionStorage.getItem('products')!);
+                  setProducts(storageProducts);
+                  
+              } else {
+                  const p = await getAllProducts();
+                  const conSpecialPrice = p.data.map((product: IProduct)=> {
+                      specialPrices.forEach(sp => {
+                          if(product._id === sp.productId){
+                              product.specialPrice = sp.specialPrice
+                          }
+                      })
+                      return product
+                  })
+                  setProducts([...conSpecialPrice]);
+                  
+                  sessionStorage.setItem('products', JSON.stringify(p.data));
+              }
+          }
+  
+          fetchProducts();
+      }, [])
+  
+
+
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Manejo del envío del formulario
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log("Datos enviados:", formData);
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      const createSpecialPriceUser = await createSpecialPrice(formData);
+      if(createSpecialPriceUser){
+          sessionStorage.removeItem('products');
+          sessionStorage.removeItem('specialPrices');
+          setIsLogin(true);
+          setRegisteredUser(createSpecialPriceUser.data);
+          setRegisteredDocument(createSpecialPriceUser.data.subscribedUsers[0]?.document)
+          sessionStorage.setItem('registeredUser', JSON.stringify(createSpecialPriceUser.data));
+          sessionStorage.setItem('isLogin', 'true');
+          sessionStorage.setItem('registeredDocument', JSON.stringify(createSpecialPriceUser.data.subscribedUsers[0]?.document));
+
+      }
+      if(createSpecialPriceUser.resStatus === 400 ) {
+        return alert(createSpecialPriceUser.messages[0])
+      }
+      setFormData(initialForm);
+      alert("Registraste el producto con éxito. Búscalo en tienda")
   };
 
   return (
@@ -36,11 +75,11 @@ export default function SpecialPriceForm() {
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label>Nombre</label>
-          <input type="text" name="name" value={formData.name} onChange={handleChange} required />
+          <input placeholder="Ingres tu Nombre y Apellido" type="text" name="name" value={formData.name} onChange={handleChange} required />
         </div>
         <div className="form-group">
           <label>Documento</label>
-          <input type="text" name="document" value={formData.document} onChange={handleChange} required />
+          <input placeholder="Ingres el documento" type="text" name="document" value={formData.document} onChange={handleChange} required />
         </div>
         <div className="form-group">
           <label>Producto</label>

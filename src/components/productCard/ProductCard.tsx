@@ -1,13 +1,10 @@
-import { useContext, useState } from "react";
-
-import Swal from 'sweetalert2'
-import withReactContent from 'sweetalert2-react-content'
-
-const MySwal = withReactContent(Swal);
 
 import './productCard.css';
 
 import { IProduct } from "../../interfaces/product.interface";
+import { useContext } from 'react';
+import { AppContext } from '../../context/contextProvider';
+
 
 
 interface Props {
@@ -15,90 +12,33 @@ interface Props {
 }
 
 export const ProductCard = ({product}: Props) => {
-    const [valueCounter, setValueCounter] = useState<number>(1);
-    // const {buyActions, setFunds, funds, movements, setMovements} = useContext(AppContext);
+    const {isLogin} = useContext(AppContext);
 
+    let specialPrice;
     const formattedPrice = new Intl.NumberFormat("es-CO", {
         style: "currency",
-        currency: "USD", // Cambia "COP" por la moneda que necesites (USD, EUR, etc.)
+        currency: "USD", 
       }).format(product.price!);
-    let formattedTotal = new Intl.NumberFormat("es-CO", {
-    style: "currency",
-    currency: "USD", // Cambia "COP" por la moneda que necesites (USD, EUR, etc.)
-    }).format(product.price! * 1);
-  
-   
- 
-    // const handleBuy = ()=> {
-    //     MySwal.fire({
-    //         title: "¿Quieres Comprar estas acciones?",
-    //         text:`${company.company} - ${valueCounter} unds - ${formattedTotal}`,
-    //         showDenyButton: true,
-    //         showCancelButton: false,
-    //         denyButtonText: `No comprar`,
-    //         confirmButtonText: "Comprar",
-    //         reverseButtons: true,
-    //         customClass: {
-    //             popup: "custom-popup",
-    //             title: "custom-title",
-    //             htmlContainer: "custom-html",
-    //             confirmButton: "custom-confirm-button",
-    //             cancelButton: "custom-cancel-button",
-    //         },
-    //       }).then((result) => { 
-    //         /* Read more about isConfirmed, isDenied below */
-    //         if (result.isConfirmed) {
-    //           const spend = Number((company.price * valueCounter).toFixed(2));
-    //           if(funds.total >=  spend){
-    //             buyActions(company, valueCounter);
-    //             const newFunds = {...funds, spent: funds.spent + spend  , total: funds.total - spend}
-    //             setFunds(newFunds)
-    //             localStorage.setItem('funds', JSON.stringify(newFunds));
-
-    //             const newMovement : IMovement = {
-    //                 id: `${movements.length + Math.floor(Math.random() * 1000)}`,
-    //                 concept: 'Compra',
-    //                 payee: company.company,
-    //                 value: spend,
-    //                 dateRecharge: Date.now()
-    //             }
-    //             const newMovements = [newMovement, ...movements];
-    //             setMovements(newMovements);
-    //             localStorage.setItem('movements', JSON.stringify(newMovements));
-    //             Swal.fire({title: "Excelente, compra Exitosa! ", text: "", icon: "success",
-    //               customClass: {
-    //                   confirmButton: "custom-success-button", // Estilo de botón tras cancelar
-    //               }
-    //             });
-    //           } else {
-    //             Swal.fire({title: "No tienes Fondos suficientes", text: "Recarga para poder realizar esta compra", icon: "error",
-    //               customClass: {
-    //                   confirmButton: "custom-error-button", // Estilo de botón tras cancelar
-    //               }
-    //             });
-    //           }
-              
-    //         } else if (result.isDenied) {
-    //           Swal.fire({title: "Se ha cancelado la compra", text: "", icon: "info",
-    //             customClass: {
-    //                 confirmButton: "custom-error-button", // Estilo de botón tras cancelar
-    //             }
-    //           });
-    //         }
-    //       });
-    // }
     
+      if(product.specialPrice){
+          specialPrice = new Intl.NumberFormat("es-CO", {
+            style: "currency",
+            currency: "USD",
+          }).format(product.specialPrice);
+        
+      }
 
 
   return (
     <div className="card">
         <div className="card-header">
+            {product.specialPrice && isLogin && <span className="promo">PROMO</span>}
             <h3>{product.name}</h3>
             <h3 className="card-brand">{product.brand}</h3>
         </div>
-        <div className="card-body">
-            {/* <p><strong style={{color: "#2c3469"}}>Stock:</strong> {company.stock} acciones</p> */}
-            <p><strong style={{color: "#2c3469"}}>Precio:</strong> {formattedPrice}</p>
+        <div className="card-body" style={{display: 'flex', gap: '20px'}}>
+            <p><strong style={{color: "#2c3469"}}>Precio:</strong> <span style={{textDecoration: product.specialPrice ? 'line-through': 'none' , color: product.specialPrice ? 'gray': "#2c3469" }}>{formattedPrice}</span></p>
+            {product.specialPrice && isLogin && <p style={{color: "#e74c3c"}}> {specialPrice}</p> }
         </div>
         <div className="card-footer">
             <div className="card-footer-info description"> 

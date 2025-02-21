@@ -7,8 +7,28 @@ import { AppContext } from "../../context/contextProvider";
 import { getAllProducts, getAllSpecialPrices } from "../../services/apiService";
 import { IProduct } from "../../interfaces/product.interface";
 
-
 export default function Home(){
+    const {products, setProducts, specialPrices, setSpecialPrices, registeredUser, setRegisteredUser,
+        isLogin, registeredDocument, setIsLogin, setRegisteredDocument
+    } = useContext(AppContext);
+
+    useEffect(()=> {
+        if(sessionStorage.getItem('registeredUser')){
+            const storageRegisteredUSer = JSON.parse( sessionStorage.getItem('registeredUser')!);
+            setRegisteredUser(storageRegisteredUSer);
+        }
+        if(sessionStorage.getItem('isLogin')){
+            const storageIsLogin = sessionStorage.getItem('isLogin');
+            setIsLogin(storageIsLogin === 'true' ? true : false);
+            
+        }
+        if(sessionStorage.getItem('registeredDocument')){
+            const storageRegisteredDocument = JSON.parse( sessionStorage.getItem('registeredDocument')!);
+            setRegisteredDocument(storageRegisteredDocument);
+          
+        }
+    }, [])
+
     useEffect(() => {
         const fetchSpecialPrices = async() => {
             if(sessionStorage.getItem('specialPrices')){
@@ -32,36 +52,39 @@ export default function Home(){
                 setProducts(storageProducts);
                 
             } else {
+                const latestSpecialPrices = [...specialPrices]
                 const p = await getAllProducts();
-                const conSpecialPrice = p.data.map((product: IProduct)=> {
-                    specialPrices.forEach(sp => {
-                        if(product._id === sp.productId){
-                            product.specialPrice = sp.specialPrice
-                        }
-                    })
-                    return product
-                })
-                setProducts([...conSpecialPrice]);
                 
-                sessionStorage.setItem('products', JSON.stringify(p.data));
+                if(isLogin) {
+                    const conSpecialPrice = p.data.map((product: IProduct)=> {
+                        latestSpecialPrices.forEach(sp => {
+                            if(product._id === sp.productId){
+                                sp.subscribedUsers?.forEach(user=> {
+                                    if(user.document === registeredDocument ){
+                                        product.specialPrice = sp.specialPrice
+                                    }
+                                })
+                            }
+                        })
+                        return product
+                    })
+                    setProducts([...conSpecialPrice]);
+                    
+                    sessionStorage.setItem('products', JSON.stringify(conSpecialPrice));
+                } else {
+                    setProducts([...p.data]);
+                    sessionStorage.setItem('products', JSON.stringify(p.data));
+                }
             }
         }
 
         fetchProducts();
-    }, [])
+    }, [specialPrices, registeredUser])
+
+    // console.log('isLogin', isLogin, 'registeredUser', registeredUser, 'userDocument', registeredDocument);
 
     
-    useEffect(() => {
-        if(sessionStorage.getItem('registeredUser')){
-            const storageUser = JSON.parse( sessionStorage.getItem('registeredUser')!);
-            setRegisteredUser(storageUser);
-        }
-    }, [])
-    
-   
-    
-    const {products, setProducts, specialPrices, setSpecialPrices, setRegisteredUser} = useContext(AppContext);
-   console.log('products', products);
+
   
   return (
     <LayoutComponent>
