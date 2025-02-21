@@ -54,7 +54,7 @@ export default function Home(){
             } else {
                 const latestSpecialPrices = [...specialPrices]
                 const p = await getAllProducts();
-                
+                debugger
                 if(isLogin) {
                     const conSpecialPrice = p.data.map((product: IProduct)=> {
                         latestSpecialPrices.forEach(sp => {
@@ -79,7 +79,7 @@ export default function Home(){
         }
 
         fetchProducts();
-    }, [specialPrices, registeredUser])
+    }, [specialPrices, registeredUser, isLogin])
 
     // console.log('isLogin', isLogin, 'registeredUser', registeredUser, 'userDocument', registeredDocument);
 

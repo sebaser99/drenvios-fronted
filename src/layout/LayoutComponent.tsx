@@ -1,14 +1,15 @@
 import { ChangeEvent, useContext, useState } from "react";
 import { Navbar } from "../components/navbar/Navbar"
 import './layout.css';
-import { userRegisteredSpecialPrices } from "../services/apiService";
+import { getAllProducts, userRegisteredSpecialPrices } from "../services/apiService";
 import { AppContext } from "../context/contextProvider";
+import { IProduct } from "../interfaces/product.interface";
 
 interface Props {
     children: React.ReactNode;
 }
 export const LayoutComponent: React.FC<Props> = ({children}) => {
-      const {registeredUser, setRegisteredUser, setIsLogin, setRegisteredDocument, isLogin} = useContext(AppContext);
+      const {products, setProducts, specialPrices, setSpecialPrices, registeredDocument,  registeredUser, setRegisteredUser, setIsLogin, setRegisteredDocument, isLogin} = useContext(AppContext);
   
   const [showInput, setShowinput] = useState(false);
    const [inputValue, setInputValue] = useState<string>('');
@@ -34,6 +35,26 @@ export const LayoutComponent: React.FC<Props> = ({children}) => {
     sessionStorage.setItem('isLogin', 'true');
     sessionStorage.setItem('registeredDocument', JSON.stringify(user.data[0].subscribedUsers[0].document));
     setInputValue('');
+
+    const latestSpecialPrices = [...specialPrices]
+    const p = await getAllProducts();
+    
+    const conSpecialPrice = p.data.map((product: IProduct)=> {
+        latestSpecialPrices.forEach(sp => {
+            if(product._id === sp.productId){
+                sp.subscribedUsers?.forEach(user=> {
+                    if(user.document === registeredDocument ){
+                        product.specialPrice = sp.specialPrice
+                    }
+                })
+            }
+        })
+        return product
+    })
+    setProducts([...conSpecialPrice]);
+    
+    sessionStorage.setItem('products', JSON.stringify(conSpecialPrice));
+
   }
   const handleinput = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>)=> {
     setInputValue(e.target.value)

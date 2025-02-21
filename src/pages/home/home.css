@@ -1,0 +1,27 @@
+.discounts {
+    background-color: #ef6152;
+    color: white;
+    padding: 15px;
+    /* width: 90px;
+    height: 75px; */
+    /* display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; */
+    /* border-radius:50%; */
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    /* position:fixed;
+    top: 80%;
+    right: 5%;
+    z-index: 1200; */
+}
+
+.discounts:hover {
+    transform: scale(1.2);
+}
+.discounts  span {
+    /* display: block; */
+    font-weight: bold;
+    font-size: 12px;
+}
