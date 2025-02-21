@@ -24,6 +24,14 @@ html, body {
   box-sizing: border-box;
 }
 
+input:focus {
+  outline: none;
+  border: none;
+}
+input:focus {
+  outline: none;
+  border: none;
+}
 .container {
   max-width: 1000px;
   margin: 0 auto;

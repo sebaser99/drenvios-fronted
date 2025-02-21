@@ -1,13 +1,9 @@
 import { Link } from "react-router-dom"
 import './navbar.css';
-import { useContext, useEffect, useState } from "react";
-import { AppContext } from "../../context/contextProvider";
-import { useDebounce } from "../../hooks/useDebounce";
+import {  useEffect, useState } from "react";
 
 export const Navbar = () => {
  
- 
-
  
   const [pathNav, setPathNav] = useState("");
   const [isOpen, setIsOpen] = useState(false);
@@ -37,7 +33,7 @@ export const Navbar = () => {
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
-
+  console.log(pathNav)
   const updateVisibility = () => {
     // Oculta el botón si el ancho de la pantalla es menor a 768px
     setIsVisible(window.innerWidth > 600);
